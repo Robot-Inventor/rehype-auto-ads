@@ -1,0 +1,36 @@
+{
+  "name": "remark-auto-ads",
+  "version": "1.0.0",
+  "description": "Remark.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Robot-Inventor/remark-auto-ads.git"
+  },
+  "keywords": [
+    "remark-plugin",
+    "markdown"
+  ],
+  "author": "Robot-Inventor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Robot-Inventor/remark-auto-ads/issues"
+  },
+  "homepage": "https://github.com/Robot-Inventor/remark-auto-ads#readme",
+  "devDependencies": {
+    "remark": "^15.0.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "unist-util-visit-parents": "^6.0.1"
+  }
+}
