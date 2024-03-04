@@ -3,15 +3,34 @@ import type { Plugin, Transformer } from "unified";
 import type { Node } from "unist";
 import type { Root } from "mdast";
 
+/**
+ * Options for the remark-auto-ads plugin.
+ */
 export interface RemarkAutoAdsOptions {
+    /**
+     * The ad code to be inserted. For example, Google Adsense display ad code.
+     */
     adCode: string;
+    /**
+     * Initial value of paragraph counter. In other words, this value should be set to the value of ``paragraphInterval`` minus the number of paragraphs you want to insert the first ad.
+     *
+     * If you want to insert ad code from the third paragraph and every 5 paragraphs, set this to ``2``.
+     *
+     * @default 0
+     */
     countFrom?: number;
+    /**
+     * The value indicating how many paragraphs to insert advertising code. For example, specifying 5 will insert ads every 5 paragraphs.
+     *
+     * @default 5
+     */
     paragraphInterval?: number;
 }
 
+/**
+ * Complete option data merged with default and user-specified options.
+ */
 type RemarkAutoAdsFullOptions = Required<RemarkAutoAdsOptions>;
-
-type RemarkPlugin = Plugin<RemarkAutoAdsOptions[], Root>;
 
 declare module "unist" {
     interface Data {
@@ -23,7 +42,12 @@ declare module "unist" {
     }
 }
 
-const remarkAutoAds: RemarkPlugin = (args: RemarkAutoAdsOptions) => {
+/**
+ * remark.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
+ *
+ * This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
+ */
+const remarkAutoAds: Plugin<RemarkAutoAdsOptions[], Root> = (args: RemarkAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
         paragraphInterval: 5
