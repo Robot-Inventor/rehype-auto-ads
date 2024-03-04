@@ -52,7 +52,7 @@ declare module "unist" {
  *
  * This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
  */
-const remarkAutoAds: Plugin<RemarkAutoAdsOptions[], Root> = (args: RemarkAutoAdsOptions) => {
+const remarkAutoAds: Plugin<[RemarkAutoAdsOptions], Root> = (args: RemarkAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
         paragraphInterval: 5
