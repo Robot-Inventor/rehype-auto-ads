@@ -19,20 +19,43 @@ import remark from "remark";
 import remarkAutoAds from "remark-auto-ads";
 
 const processor = remark().use(remarkAutoAds, {
-    // Some options here
+    adCode: "<AD_CODE>",
+    paragraphInterval: 2
 });
 
 const markdown = `
-# Hello World
+# Hello, world!
 
 This is a paragraph.
 
-This is another paragraph.
+This is a paragraph.
+
+This is a paragraph.
+
+This is a paragraph.
 `;
 
 processor.process(markdown).then((result) => {
-  console.log(result.contents);
+    console.log(result.toString());
 });
+```
+
+The above code will output the following:
+
+```markdown
+# Hello, world!
+
+This is a paragraph.
+
+This is a paragraph.
+
+<AD_CODE>
+
+This is a paragraph.
+
+This is a paragraph.
+
+<AD_CODE>
 ```
 
 ## Options
