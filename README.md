@@ -4,7 +4,7 @@ remark.js plugin that automatically inserts Google Adsense (and theoretically an
 
 This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
 
-(Unlike Google Adsense's automatic ads) no ad code is inserted into quote blocks or list items!
+(Unlike Google Adsense's automatic ads) no ad code is inserted into blockquote or list items!
 
 ## Install
 
