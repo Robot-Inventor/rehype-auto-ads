@@ -32,6 +32,11 @@ export interface RemarkAutoAdsOptions {
  */
 type RemarkAutoAdsFullOptions = Required<RemarkAutoAdsOptions>;
 
+const EXCLUDE_TARGETS = {
+    nodeTypes: ["blockquote", "list"],
+    hNames: ["aside"]
+};
+
 declare module "unist" {
     interface Data {
         hName?: string;
@@ -67,7 +72,10 @@ const remarkAutoAds: Plugin<RemarkAutoAdsOptions[], Root> = (args: RemarkAutoAds
             }
 
             const skipNode = ancestors.some((ancestor) => {
-                return ["blockquote", "list"].includes(ancestor.type) || ancestor.data?.hName === "aside";
+                return (
+                    EXCLUDE_TARGETS.nodeTypes.includes(ancestor.type) ||
+                    EXCLUDE_TARGETS.hNames.includes(ancestor.data?.hName || "")
+                );
             });
 
             if (skipNode) return;
