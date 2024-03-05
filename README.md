@@ -1,6 +1,6 @@
-# remark-auto-ads
+# rehype-auto-ads
 
-remark.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
+rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
 
 This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
 
@@ -9,19 +9,28 @@ This plugin inserts an ad code for each specified number of paragraphs. For exam
 ## Install
 
 ```bash
-npm install remark-auto-ads
+npm install rehype-auto-ads
 ```
 
 ## Usage
 
 ```javascript
-import remark from "remark";
-import remarkAutoAds from "remark-auto-ads";
+import remarkParse from "remark-parse";
+import rehypeStringify from "rehype-stringify";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
+import rehypeAutoAds from "rehype-auto-ads";
 
-const processor = remark().use(remarkAutoAds, {
+const options = {
     adCode: "<AD_CODE>",
     paragraphInterval: 2
-});
+};
+
+const processor = unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeAutoAds, options)
+    .use(rehypeStringify);
 
 const markdown = `
 # Hello, world!
@@ -43,25 +52,17 @@ processor.process(markdown).then((result) => {
 The above code will output the following:
 
 ```markdown
-# Hello, world!
-
-This is a paragraph.
-
-This is a paragraph.
-
-<AD_CODE>
-
-This is a paragraph.
-
-This is a paragraph.
-
-<AD_CODE>
+<h1>Hello, world!</h1>
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p><AD_CODE>
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p><AD_CODE>
 ```
 
 ## Options
 
 ```typescript
-export interface RemarkAutoAdsOptions {
+export interface RehypeAutoAdsOptions {
     adCode: string;
     countFrom?: number;
     paragraphInterval?: number;

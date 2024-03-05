@@ -1,12 +1,13 @@
 import { visitParents } from "unist-util-visit-parents";
 import type { Plugin, Transformer } from "unified";
-import type { Node } from "unist";
-import type { Root } from "mdast";
+import type { Element, ElementContent } from "hast";
+import { isElement } from "hast-util-is-element";
+import { fromHtml } from "hast-util-from-html";
 
 /**
- * Options for the remark-auto-ads plugin.
+ * Options for the rehype-auto-ads plugin.
  */
-export interface RemarkAutoAdsOptions {
+export interface RehypeAutoAdsOptions {
     /**
      * The ad code to be inserted. For example, Google Adsense display ad code.
      */
@@ -30,52 +31,42 @@ export interface RemarkAutoAdsOptions {
 /**
  * Complete option data merged with default and user-specified options.
  */
-type RemarkAutoAdsFullOptions = Required<RemarkAutoAdsOptions>;
+type RehypeAutoAdsFullOptions = Required<RehypeAutoAdsOptions>;
 
 const EXCLUDE_TARGETS = {
-    nodeTypes: ["blockquote", "list"],
-    hNames: ["aside"]
+    tagNames: ["aside", "blockquote", "ul", "ol", "li"]
 };
 
-declare module "unist" {
-    interface Data {
-        hName?: string;
-    }
-
-    interface Node {
-        children?: Node[];
-    }
-}
-
 /**
- * remark.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
+ * rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
  *
  * This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
  */
-const remarkAutoAds: Plugin<[RemarkAutoAdsOptions], Root> = (args: RemarkAutoAdsOptions) => {
+const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Element> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
         paragraphInterval: 5
     };
 
-    const options: RemarkAutoAdsFullOptions = {
+    const options: RehypeAutoAdsFullOptions = {
         ...defaultOptions,
         ...args
     };
 
-    const transform: Transformer<Root> = (tree) => {
+    const adCodeHast = fromHtml(options.adCode, { fragment: true }).children as ElementContent[];
+
+    const transform: Transformer<Element> = (tree) => {
         let paragraphCount = options.countFrom || 0;
 
-        visitParents<Node, string>(tree, "paragraph", (node, ancestors: Node[]) => {
-            if (node.type === "paragraph") {
+        visitParents<Element, string>(tree, "element", (node, ancestors) => {
+            if (!isElement(node)) return;
+
+            if (node.tagName === "p") {
                 paragraphCount++;
             }
 
             const skipNode = ancestors.some((ancestor) => {
-                return (
-                    EXCLUDE_TARGETS.nodeTypes.includes(ancestor.type) ||
-                    EXCLUDE_TARGETS.hNames.includes(ancestor.data?.hName || "")
-                );
+                return EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName);
             });
 
             if (skipNode) return;
@@ -83,10 +74,7 @@ const remarkAutoAds: Plugin<[RemarkAutoAdsOptions], Root> = (args: RemarkAutoAds
             if (paragraphCount >= options.paragraphInterval) {
                 paragraphCount = 0;
 
-                const adNode = {
-                    type: "html",
-                    value: options.adCode
-                };
+                const ad = structuredClone(adCodeHast);
 
                 if (ancestors.length === 0) return;
 
@@ -95,7 +83,7 @@ const remarkAutoAds: Plugin<[RemarkAutoAdsOptions], Root> = (args: RemarkAutoAds
                 const index = parent.children.indexOf(node);
 
                 if (index >= 0) {
-                    parent.children.splice(index + 1, 0, adNode);
+                    parent.children.splice(index + 1, 0, ...ad);
                 }
             }
         });
@@ -104,4 +92,4 @@ const remarkAutoAds: Plugin<[RemarkAutoAdsOptions], Root> = (args: RemarkAutoAds
     return transform;
 };
 
-export default remarkAutoAds;
+export default rehypeAutoAds;
