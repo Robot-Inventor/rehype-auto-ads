@@ -1,6 +1,6 @@
 import { visitParents } from "unist-util-visit-parents";
 import type { Plugin, Transformer } from "unified";
-import type { Element, ElementContent } from "hast";
+import type { ElementContent, Root } from "hast";
 import { isElement } from "hast-util-is-element";
 import { fromHtml } from "hast-util-from-html";
 
@@ -42,7 +42,7 @@ const EXCLUDE_TARGETS = {
  *
  * This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
  */
-const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Element> = (args: RehypeAutoAdsOptions) => {
+const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
         paragraphInterval: 5
@@ -55,10 +55,10 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Element> = (args: RehypeAuto
 
     const adCodeHast = fromHtml(options.adCode, { fragment: true }).children as ElementContent[];
 
-    const transform: Transformer<Element> = (tree) => {
+    const transform: Transformer<Root> = (tree) => {
         let paragraphCount = options.countFrom || 0;
 
-        visitParents<Element, string>(tree, "element", (node, ancestors) => {
+        visitParents<Root, string>(tree, "element", (node, ancestors) => {
             if (!isElement(node)) return;
 
             if (node.tagName === "p") {
@@ -66,7 +66,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Element> = (args: RehypeAuto
             }
 
             const skipNode = ancestors.some((ancestor) => {
-                return EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName);
+                return isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName);
             });
 
             if (skipNode) return;
