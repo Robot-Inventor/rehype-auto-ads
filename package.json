@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "version": "npm run build",
     "test": "vitest",
     "format": "prettier ./src/ --write",
     "format:check": "prettier ./src/ --check"
