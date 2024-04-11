@@ -1,8 +1,8 @@
-import { visitParents } from "unist-util-visit-parents";
-import type { Plugin, Transformer } from "unified";
 import type { ElementContent, Root } from "hast";
-import { isElement } from "hast-util-is-element";
+import type { Plugin, Transformer } from "unified";
 import { fromHtml } from "hast-util-from-html";
+import { isElement } from "hast-util-is-element";
+import { visitParents } from "unist-util-visit-parents";
 
 /**
  * Options for the rehype-auto-ads plugin.
@@ -13,16 +13,17 @@ export interface RehypeAutoAdsOptions {
      */
     adCode: string;
     /**
-     * Initial value of paragraph counter. In other words, this value should be set to the value of ``paragraphInterval`` minus the number of paragraphs you want to insert the first ad.
+     * Initial value of paragraph counter.
+     * In other words, this value should be set to the value of ``paragraphInterval``
+     * minus the number of paragraphs you want to insert the first ad.
      *
      * If you want to insert ad code from the third paragraph and every 5 paragraphs, set this to ``2``.
-     *
      * @default 0
      */
     countFrom?: number;
     /**
-     * The value indicating how many paragraphs to insert advertising code. For example, specifying 5 will insert ads every 5 paragraphs.
-     *
+     * The value indicating how many paragraphs to insert advertising code.
+     * For example, specifying 5 will insert ads every 5 paragraphs.
      * @default 5
      */
     paragraphInterval?: number;
@@ -38,10 +39,14 @@ const EXCLUDE_TARGETS = {
 };
 
 /**
- * rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
+ * Rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
  *
- * This plugin inserts an ad code for each specified number of paragraphs. For example, insert Google Adsense display ad code every 5 paragraphs.
+ * This plugin inserts an ad code for each specified number of paragraphs.
+ * For example, insert Google Adsense display ad code every 5 paragraphs.
+ * @param args Options for the rehype-auto-ads plugin.
+ * @returns The transformer function that inserts the ad code.
  */
+// eslint-disable-next-line max-lines-per-function
 const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
@@ -55,9 +60,15 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
     const adCodeHast = fromHtml(options.adCode, { fragment: true }).children as ElementContent[];
 
+    /**
+     * The transformer function that inserts the ad code.
+     * @param tree The root node of the HAST tree.
+     */
     const transform: Transformer<Root> = (tree) => {
+        // eslint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
 
+        // eslint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
             if (!isElement(node)) return;
 
@@ -65,24 +76,29 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
                 paragraphCount++;
             }
 
-            const skipNode = ancestors.some((ancestor) => {
-                return isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName);
-            });
+            const skipNode = ancestors.some(
+                (ancestor) => isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName)
+            );
 
             if (skipNode) return;
 
             if (paragraphCount >= options.paragraphInterval) {
+                // eslint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
 
                 const ad = structuredClone(adCodeHast);
 
+                // eslint-disable-next-line no-magic-numbers
                 if (ancestors.length === 0) return;
 
+                // eslint-disable-next-line no-magic-numbers
                 const parent = ancestors[ancestors.length - 1];
                 if (!parent.children) return;
                 const index = parent.children.indexOf(node);
 
+                // eslint-disable-next-line no-magic-numbers
                 if (index >= 0) {
+                    // eslint-disable-next-line no-magic-numbers
                     parent.children.splice(index + 1, 0, ...ad);
                 }
             }

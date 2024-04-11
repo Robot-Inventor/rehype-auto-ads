@@ -1,4 +1,4 @@
-name: Node.js CI (format)
+name: Node.js CI (lint)
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
         branches: [main]
 
 jobs:
-    format:
+    lint:
         runs-on: ubuntu-latest
 
         strategy:
@@ -21,4 +21,4 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
-            - run: npm run format:check
+            - run: npm run lint
