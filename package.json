@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "version": "npm run build",
+    "version": "npm run build && git add .",
     "test": "vitest",
     "format": "prettier ./src/ --write",
     "format:check": "prettier ./src/ --check"
