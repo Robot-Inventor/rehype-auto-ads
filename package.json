@@ -2,6 +2,9 @@
   "name": "rehype-auto-ads",
   "version": "1.0.2",
   "description": "rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code",
+  "publishConfig": {
+    "provenance": true
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -14,7 +17,9 @@
     "test": "vitest",
     "format": "prettier ./src/ --write",
     "format:check": "prettier ./src/ --check",
-    "lint": "eslint ./src/**/*.ts"
+    "lint": "eslint ./src/**/*.ts",
+    "changeset-version": "changeset version && npm run version",
+    "changeset-publish": "npm run build && changeset publish"
   },
   "repository": {
     "type": "git",
@@ -31,6 +36,8 @@
   },
   "homepage": "https://github.com/Robot-Inventor/rehype-auto-ads#readme",
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
     "@robot-inventor/eslint-config": "^0.1.1",
     "eslint": "^9.0.0",
     "prettier": "^3.2.5",
