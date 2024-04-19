@@ -86,3 +86,36 @@ Default: ``0``
 The value indicating how many paragraphs to insert advertising code. For example, specifying 5 will insert ads every 5 paragraphs.
 
 Default: ``5``
+
+## Development
+
+```bash
+npm install
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Format and Lint
+
+```bash
+npm run format
+npm run lint
+```
+
+### Test
+
+```bash
+npm run test
+```
+
+### Pull Requests
+
+This repository uses [Changesets](https://github.com/changesets/changesets) to manage versioning and releases. When creating a pull request, please run the Changesets CLI and commit the changeset file.
+
+```bash
+npx changeset
+```
