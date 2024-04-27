@@ -1,5 +1,6 @@
-import type { ElementContent, Root } from "hast";
+import type { Doctype, Element, ElementContent, Root } from "hast";
 import type { Plugin, Transformer } from "unified";
+import type { VFile } from "vfile";
 import { fromHtml } from "hast-util-from-html";
 import { isElement } from "hast-util-is-element";
 import { visitParents } from "unist-util-visit-parents";
@@ -27,6 +28,22 @@ export interface RehypeAutoAdsOptions {
      * @default 5
      */
     paragraphInterval?: number;
+    /**
+     * Function to determine whether to insert an ad code.
+     * If this function returns ``true``, the ad code will be inserted.
+     * The default implementation always returns ``true``.
+     * @param vfile vfile of the current file.
+     * @param previousNode The previous node of the insertion point.
+     * @param nextNode The next node of the insertion point.
+     * @param ancestors Ancestors of the ``previousNode``.
+     * @returns Whether to insert ads or not.
+     */
+    shouldInsertAd?: (
+        vfile: VFile,
+        previousNode: Root | ElementContent | Doctype,
+        nextNode: Root | ElementContent | Doctype | null,
+        ancestors: (Root | Element)[]
+    ) => boolean;
 }
 
 /**
@@ -50,8 +67,10 @@ const EXCLUDE_TARGETS = {
 const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
         countFrom: 0,
-        paragraphInterval: 5
-    };
+        paragraphInterval: 5,
+        // eslint-disable-next-line jsdoc/require-jsdoc
+        shouldInsertAd: () => true
+    } satisfies Partial<RehypeAutoAdsOptions>;
 
     const options: RehypeAutoAdsFullOptions = {
         ...defaultOptions,
@@ -63,8 +82,9 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
     /**
      * The transformer function that inserts the ad code.
      * @param tree The root node of the HAST tree.
+     * @param vfile The vfile of the current file.
      */
-    const transform: Transformer<Root> = (tree) => {
+    const transform: Transformer<Root> = (tree, vfile) => {
         // eslint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
 
@@ -82,6 +102,14 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
             if (skipNode) return;
 
+            // eslint-disable-next-line no-magic-numbers
+            const parent = ancestors[ancestors.length - 1];
+            const index = parent.children.indexOf(node);
+            // eslint-disable-next-line no-magic-numbers
+            const nextNode = parent.children[index + 1];
+
+            if (!options.shouldInsertAd(vfile, node, nextNode || null, ancestors)) return;
+
             if (paragraphCount >= options.paragraphInterval) {
                 // eslint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
@@ -90,11 +118,6 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
                 // eslint-disable-next-line no-magic-numbers
                 if (ancestors.length === 0) return;
-
-                // eslint-disable-next-line no-magic-numbers
-                const parent = ancestors[ancestors.length - 1];
-                if (!parent.children) return;
-                const index = parent.children.indexOf(node);
 
                 // eslint-disable-next-line no-magic-numbers
                 if (index >= 0) {

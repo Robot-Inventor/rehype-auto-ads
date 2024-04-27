@@ -66,6 +66,12 @@ export interface RehypeAutoAdsOptions {
     adCode: string;
     countFrom?: number;
     paragraphInterval?: number;
+    shouldInsertAd?: (
+        vfile: VFile,
+        previousNode: Root | ElementContent | Doctype,
+        nextNode: Root | ElementContent | Doctype | null,
+        ancestors: (Root | Element)[]
+    ) => boolean;
 }
 ```
 
@@ -86,6 +92,17 @@ Default: ``0``
 The value indicating how many paragraphs to insert advertising code. For example, specifying 5 will insert ads every 5 paragraphs.
 
 Default: ``5``
+
+### ``shouldInsertAd``
+
+Function to determine whether to insert an ad code. If this function returns ``true``, the ad code will be inserted. The default implementation always returns ``true``.
+
+#### Parameters
+
+- ``vfile``: vfile of the current file.
+- ``previousNode``: The previous node of the insertion point.
+- ``nextNode``: The next node of the insertion point.
+- ``ancestors``: Ancestors of the `previousNode`.
 
 ## Development
 
