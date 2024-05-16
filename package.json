@@ -1,6 +1,6 @@
 {
   "name": "rehype-auto-ads",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code",
   "publishConfig": {
     "provenance": true
