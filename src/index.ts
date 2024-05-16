@@ -90,11 +90,9 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
         // eslint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
-            if (!isElement(node)) return;
+            if (!isElement(node) || node.tagName !== "p") return;
 
-            if (node.tagName === "p") {
-                paragraphCount++;
-            }
+            paragraphCount++;
 
             const skipNode = ancestors.some(
                 (ancestor) => isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName)
