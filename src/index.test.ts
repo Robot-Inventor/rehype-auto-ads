@@ -165,7 +165,7 @@ This is a paragraph.`.trim();
     const processor = processorFactory({
         adCode: AD_CODE,
         paragraphInterval: 1,
-        countFrom: 2,
+        countFrom: 0,
         shouldInsertAd: (_, previousNode, nextNode, ancestors) => {
             if (nextNode && nextNode.type === "text") {
                 const parent = ancestors[ancestors.length - 1];
@@ -185,7 +185,7 @@ This is a paragraph.`.trim();
     });
 
     const expected = `
-<h1>Hello, world!</h1>${INJECTED_AD_CODE}
+<h1>Hello, world!</h1>
 <p>This is a paragraph.</p>${INJECTED_AD_CODE}
 <p>This is a paragraph.</p>
 <ul>
