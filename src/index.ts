@@ -66,11 +66,12 @@ const EXCLUDE_TARGETS = {
 // eslint-disable-next-line max-lines-per-function
 const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
+        adCode: "",
         countFrom: 0,
         paragraphInterval: 5,
-        // eslint-disable-next-line jsdoc/require-jsdoc
+        // eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/explicit-function-return-type
         shouldInsertAd: () => true
-    } satisfies Partial<RehypeAutoAdsOptions>;
+    } satisfies Required<RehypeAutoAdsOptions>;
 
     const options: RehypeAutoAdsFullOptions = {
         ...defaultOptions,
