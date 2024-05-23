@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.1.2
+
+### Patch Changes
+
+- [#18](https://github.com/Robot-Inventor/rehype-auto-ads/pull/18) [`a21058c`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/a21058cacae71a7464f1c768418c381663ceed44) Thanks [@renovate](https://github.com/apps/renovate)! - refactor: improve internal types
+
 ## 1.1.1
 
 ### Patch Changes
