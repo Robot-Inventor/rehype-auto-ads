@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.1.3
+
+### Patch Changes
+
+- [#21](https://github.com/Robot-Inventor/rehype-auto-ads/pull/21) [`24f02e8`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/24f02e8305e8471ac2da4348dfd1b48d1147b933) Thanks [@dependabot](https://github.com/apps/dependabot)! - build(deps-dev): bump braces from 3.0.2 to 3.0.3
+
 ## 1.1.2
 
 ### Patch Changes
