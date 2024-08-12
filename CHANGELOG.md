@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.1.4
+
+### Patch Changes
+
+- [#32](https://github.com/Robot-Inventor/rehype-auto-ads/pull/32) [`0b900b9`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/0b900b97b5e806e458388745142bd86f6469200c) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - fix: fix some ESLint errors
+
 ## 1.1.3
 
 ### Patch Changes
