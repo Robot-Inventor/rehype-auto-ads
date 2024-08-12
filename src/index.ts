@@ -8,7 +8,7 @@ import { visitParents } from "unist-util-visit-parents";
 /**
  * Options for the rehype-auto-ads plugin.
  */
-export interface RehypeAutoAdsOptions {
+interface RehypeAutoAdsOptions {
     /**
      * The ad code to be inserted. For example, Google Adsense display ad code.
      */
@@ -42,7 +42,7 @@ export interface RehypeAutoAdsOptions {
         vfile: VFile,
         previousNode: Root | ElementContent | Doctype,
         nextNode: Root | ElementContent | Doctype | null,
-        ancestors: (Root | Element)[]
+        ancestors: Array<Root | Element>
     ) => boolean;
 }
 
@@ -132,3 +132,4 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 };
 
 export default rehypeAutoAds;
+export type { RehypeAutoAdsOptions };
