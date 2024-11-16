@@ -108,7 +108,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
             const index = parent.children.indexOf(node);
             // eslint-disable-next-line no-magic-numbers
-            const nextNode = parent.children[index + 1] || null;
+            const nextNode = parent.children[index + 1] ?? null;
 
             const shouldInsertAd =
                 paragraphCount >= options.paragraphInterval && options.shouldInsertAd(vfile, node, nextNode, ancestors);
