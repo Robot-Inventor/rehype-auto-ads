@@ -1,5 +1,13 @@
 # rehype-auto-ads
 
+## 1.1.6
+
+### Patch Changes
+
+- [#42](https://github.com/Robot-Inventor/rehype-auto-ads/pull/42) [`ec779bd`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/ec779bd22de76a4b02b1748939d52d3e16ab8bda) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - fix: improve type safety
+
+- [#41](https://github.com/Robot-Inventor/rehype-auto-ads/pull/41) [`88c8a9a`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/88c8a9a0a97a394546c5440ed0b0e4ca713748af) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - chore: update vulnerable dependencies
+
 ## 1.1.5
 
 ### Patch Changes
