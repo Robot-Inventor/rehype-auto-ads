@@ -98,14 +98,17 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             const skipNode = ancestors.some(
                 (ancestor) => isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName)
             );
-
             if (skipNode) return;
 
             // eslint-disable-next-line no-magic-numbers
             const parent = ancestors[ancestors.length - 1];
+            if (!parent) {
+                throw new Error("[rehype-auto-ads] The parent node is not found.");
+            }
+
             const index = parent.children.indexOf(node);
             // eslint-disable-next-line no-magic-numbers
-            const nextNode = parent.children[index + 1];
+            const nextNode = parent.children[index + 1] || null;
 
             const shouldInsertAd =
                 paragraphCount >= options.paragraphInterval && options.shouldInsertAd(vfile, node, nextNode, ancestors);
