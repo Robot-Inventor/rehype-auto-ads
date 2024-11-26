@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.2.0
+
+### Minor Changes
+
+- [#45](https://github.com/Robot-Inventor/rehype-auto-ads/pull/45) [`bd9af02`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/bd9af02a9de842e481b6b63a7dfeb428c5f6c19f) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - feat: add the `maxAds` option
+
 ## 1.1.6
 
 ### Patch Changes
