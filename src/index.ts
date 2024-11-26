@@ -73,8 +73,8 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
     const defaultOptions = {
         adCode: "",
         countFrom: 0,
-        paragraphInterval: 5,
         maxAds: Infinity,
+        paragraphInterval: 5,
         // eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/explicit-function-return-type
         shouldInsertAd: () => true
     } satisfies Required<RehypeAutoAdsOptions>;
@@ -98,6 +98,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
         // eslint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
+            if (adCount >= options.maxAds) return;
             if (!isElement(node) || node.tagName !== "p") return;
 
             paragraphCount++;
@@ -120,7 +121,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             const shouldInsertAd =
                 paragraphCount >= options.paragraphInterval && options.shouldInsertAd(vfile, node, nextNode, ancestors);
 
-            if (shouldInsertAd && adCount < options.maxAds) {
+            if (shouldInsertAd) {
                 // eslint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
                 adCount++;
