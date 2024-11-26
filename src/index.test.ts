@@ -198,3 +198,38 @@ This is a paragraph.`.trim();
     const result = await processor.process(input);
     expect(result.toString().trim()).toBe(expected);
 });
+
+it("Respect maxAds option", async () => {
+    const input = `
+# Hello, world!
+
+This is a paragraph.
+
+This is a paragraph.
+
+This is a paragraph.
+
+This is a paragraph.
+
+This is a paragraph.
+
+This is a paragraph.`.trim();
+
+    const processor = processorFactory({
+        adCode: AD_CODE,
+        paragraphInterval: 1,
+        maxAds: 2
+    });
+
+    const expected = `
+<h1>Hello, world!</h1>
+<p>This is a paragraph.</p>${INJECTED_AD_CODE}
+<p>This is a paragraph.</p>${INJECTED_AD_CODE}
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>`.trim();
+
+    const result = await processor.process(input);
+    expect(result.toString().trim()).toBe(expected);
+});

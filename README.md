@@ -23,7 +23,8 @@ import rehypeAutoAds from "rehype-auto-ads";
 
 const options = {
     adCode: "<AD_CODE>",
-    paragraphInterval: 2
+    paragraphInterval: 2,
+    maxAds: 3
 };
 
 const processor = unified()
@@ -72,6 +73,7 @@ export interface RehypeAutoAdsOptions {
         nextNode: Root | ElementContent | Doctype | null,
         ancestors: (Root | Element)[]
     ) => boolean;
+    maxAds?: number;
 }
 ```
 
@@ -103,6 +105,12 @@ Function to determine whether to insert an ad code. If this function returns ``t
 - ``previousNode``: The previous node of the insertion point.
 - ``nextNode``: The next node of the insertion point.
 - ``ancestors``: Ancestors of the `previousNode`.
+
+### ``maxAds``
+
+The maximum number of ads to be inserted.
+
+Default: ``Infinity``
 
 ## Development
 
