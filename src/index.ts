@@ -44,6 +44,11 @@ interface RehypeAutoAdsOptions {
         nextNode: Root | ElementContent | Doctype | null,
         ancestors: Array<Root | Element>
     ) => boolean;
+    /**
+     * The maximum number of ads to be inserted.
+     * @default Infinity
+     */
+    maxAds?: number;
 }
 
 /**
@@ -69,6 +74,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         adCode: "",
         countFrom: 0,
         paragraphInterval: 5,
+        maxAds: Infinity,
         // eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/explicit-function-return-type
         shouldInsertAd: () => true
     } satisfies Required<RehypeAutoAdsOptions>;
@@ -88,6 +94,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
     const transform: Transformer<Root> = (tree, vfile) => {
         // eslint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
+        let adCount = 0;
 
         // eslint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
@@ -113,9 +120,10 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             const shouldInsertAd =
                 paragraphCount >= options.paragraphInterval && options.shouldInsertAd(vfile, node, nextNode, ancestors);
 
-            if (shouldInsertAd) {
+            if (shouldInsertAd && adCount < options.maxAds) {
                 // eslint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
+                adCount++;
 
                 const ad = structuredClone(adCodeHast);
 
