@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.2.2
+
+### Patch Changes
+
+-   [#54](https://github.com/Robot-Inventor/rehype-auto-ads/pull/54) [`0a0e511`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/0a0e5112e2575d2e4321cf402ec84d67f843f85d) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency vitest to v3.0.5 [security]
+
 ## 1.2.1
 
 ### Patch Changes
