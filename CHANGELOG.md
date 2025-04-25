@@ -1,5 +1,13 @@
 # rehype-auto-ads
 
+## 1.2.3
+
+### Patch Changes
+
+-   [#65](https://github.com/Robot-Inventor/rehype-auto-ads/pull/65) [`91d82e0`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/91d82e06a6a4d1b36970d8c297cc37346bc96071) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - chore: update vulnerable dependencies
+
+-   [#64](https://github.com/Robot-Inventor/rehype-auto-ads/pull/64) [`052e60b`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/052e60b349071014f07dc520ce7a1d7a8cc22162) Thanks [@dependabot](https://github.com/apps/dependabot)! - build(deps-dev): bump vite from 6.2.5 to 6.2.6
+
 ## 1.2.2
 
 ### Patch Changes
