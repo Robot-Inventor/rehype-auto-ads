@@ -57,7 +57,7 @@ interface RehypeAutoAdsOptions {
 type RehypeAutoAdsFullOptions = Required<RehypeAutoAdsOptions>;
 
 const EXCLUDE_TARGETS = {
-    tagNames: ["aside", "blockquote", "ul", "ol", "li"]
+    tagNames: ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"]
 };
 
 /**
