@@ -1,5 +1,16 @@
 # rehype-auto-ads
 
+## 1.2.4
+
+### Patch Changes
+
+-   [#69](https://github.com/Robot-Inventor/rehype-auto-ads/pull/69) [`62a06d0`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/62a06d03d3c4ac3593d16d34964a3e0bd837a1e8) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - fix: update EXCLUDE_TARGETS to include additional HTML elements
+
+    -   `table`
+    -   `pre`
+    -   `code`
+    -   `figure`
+
 ## 1.2.3
 
 ### Patch Changes
