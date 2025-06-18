@@ -233,3 +233,31 @@ This is a paragraph.`.trim();
     const result = await processor.process(input);
     expect(result.toString().trim()).toBe(expected);
 });
+
+it("Function-type adCode with ad index parameter", async () => {
+    const input = `
+# Title
+
+First paragraph
+
+Second paragraph
+
+Third paragraph
+
+Fourth paragraph`.trim();
+
+    const processor = processorFactory({
+        adCode: (adIndex) => `<div>Advertisement ${adIndex}</div>`,
+        paragraphInterval: 2
+    });
+
+    const expected = `
+<h1>Title</h1>
+<p>First paragraph</p>
+<p>Second paragraph</p><div>Advertisement 1</div>
+<p>Third paragraph</p>
+<p>Fourth paragraph</p><div>Advertisement 2</div>`.trim();
+
+    const result = await processor.process(input);
+    expect(result.toString().trim()).toBe(expected);
+});

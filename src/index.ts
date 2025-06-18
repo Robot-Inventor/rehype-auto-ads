@@ -11,8 +11,14 @@ import { visitParents } from "unist-util-visit-parents";
 interface RehypeAutoAdsOptions {
     /**
      * The ad code to be inserted. For example, Google Adsense display ad code.
+     *
+     * When a string is provided, it will be used as-is for all ad insertions.
+     *
+     * When a function is provided, it will be executed each time an ad is inserted with a parameter
+     * indicating which ad is being inserted (1 for first ad, 2 for second ad, etc.),
+     * allowing generation of different ad code based on position.
      */
-    adCode: string;
+    adCode: string | ((adIndex: number) => string);
     /**
      * Initial value of paragraph counter.
      * In other words, this value should be set to the value of ``paragraphInterval``
@@ -60,6 +66,8 @@ const EXCLUDE_TARGETS = {
     tagNames: ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"]
 };
 
+const FIRST_AD_INDEX = 1;
+
 /**
  * Rehype.js plugin that automatically inserts Google Adsense (and theoretically any ad service) code.
  *
@@ -84,13 +92,22 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         ...args
     };
 
-    const adCodeHast = fromHtml(options.adCode, { fragment: true }).children as ElementContent[];
+    /**
+     * Converts ad code string to HAST nodes
+     * @param code The ad code string to convert
+     * @returns Array of ElementContent nodes
+     */
+    const getAdCodeHast = (code: string): ElementContent[] =>
+        fromHtml(code, { fragment: true }).children as ElementContent[];
+
+    const adCodeSource = typeof options.adCode === "string" ? getAdCodeHast(options.adCode) : options.adCode;
 
     /**
      * The transformer function that inserts the ad code.
      * @param tree The root node of the HAST tree.
      * @param vfile The vfile of the current file.
      */
+    // eslint-disable-next-line max-lines-per-function
     const transform: Transformer<Root> = (tree, vfile) => {
         // eslint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
@@ -124,9 +141,13 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             if (shouldInsertAd) {
                 // eslint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
-                adCount++;
 
-                const ad = structuredClone(adCodeHast);
+                const ad =
+                    typeof adCodeSource === "function"
+                        ? getAdCodeHast(adCodeSource(adCount + FIRST_AD_INDEX))
+                        : structuredClone(adCodeSource);
+
+                adCount++;
 
                 // eslint-disable-next-line no-magic-numbers
                 if (ancestors.length === 0) return;
