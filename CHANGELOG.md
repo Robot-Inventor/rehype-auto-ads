@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.3.0
+
+### Minor Changes
+
+-   [#71](https://github.com/Robot-Inventor/rehype-auto-ads/pull/71) [`8dee4ab`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/8dee4abd3e3361bdc279dc43afdcddee52cf1e5a) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - feat: support function-type `adCode` for dynamic ad insertion
+
 ## 1.2.4
 
 ### Patch Changes
