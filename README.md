@@ -81,6 +81,10 @@ export interface RehypeAutoAdsOptions {
 
 The ad code to be inserted. For example, Google Adsense display ad code.
 
+When a string is provided, it will be used as-is for all ad insertions.
+
+When a function is provided, it will be executed each time an ad is inserted with a parameter indicating which ad is being inserted (1 for first ad, 2 for second ad, etc.), allowing generation of different ad code based on position.
+
 ### ``countFrom``
 
 Initial value of paragraph counter. In other words, this value should be set to the value of ``paragraphInterval`` minus the number of paragraphs you want to insert the first ad.
