@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 1.3.1
+
+### Patch Changes
+
+-   [#75](https://github.com/Robot-Inventor/rehype-auto-ads/pull/75) [`27acd3c`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/27acd3c380e35b1497e42a3570ba5ebccfc840f1) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - ci: migrate from npm token to trusted publishing
+
 ## 1.3.0
 
 ### Minor Changes
