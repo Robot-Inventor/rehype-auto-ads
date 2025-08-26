@@ -74,6 +74,7 @@ export interface RehypeAutoAdsOptions {
         ancestors: (Root | Element)[]
     ) => boolean;
     maxAds?: number;
+    excludeWithin?: string[] | ((defaults: string[]) => string[]);
 }
 ```
 
@@ -115,6 +116,30 @@ Function to determine whether to insert an ad code. If this function returns ``t
 The maximum number of ads to be inserted.
 
 Default: ``Infinity``
+
+### ``excludeWithin``
+
+Controls which ancestor elements should prevent ad insertion.
+
+Default: `["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"]`
+
+When specifying an array, the default list is replaced entirely.
+
+```javascript
+.use(rehypeAutoAds, {
+  adCode: "<AD_CODE>",
+  excludeWithin: ["pre", "code"]
+});
+```
+
+When specifying a function, the current defaults are passed as an argument, allowing you to extend the defaults.
+
+```javascript
+.use(rehypeAutoAds, {
+  adCode: "<AD_CODE>",
+  excludeWithin: (defaults) => [...defaults, "custom-element"]
+});
+```
 
 ## Development
 
