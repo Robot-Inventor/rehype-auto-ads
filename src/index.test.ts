@@ -4,6 +4,7 @@ import rehypeStringify from "rehype-stringify";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { isElement } from "hast-util-is-element";
+import { fromHtml } from "hast-util-from-html";
 import rehypeAutoAds, { RehypeAutoAdsOptions } from "./index.js";
 
 const AD_CODE = `
@@ -115,6 +116,37 @@ This is a paragraph.
     expect(result.toString().trim()).toBe(expected);
 });
 
+it("Allow insert to blockquote elements when overriding excludeWithin", async () => {
+    const input = `
+# Hello, world!
+
+This is a paragraph.
+
+> This is a paragraph.
+>
+> This is a paragraph.
+>
+> This is a paragraph.`.trim();
+
+    const processor = processorFactory({
+        adCode: AD_CODE,
+        paragraphInterval: 2,
+        excludeWithin: []
+    });
+
+    const expected = `
+<h1>Hello, world!</h1>
+<p>This is a paragraph.</p>
+<blockquote>
+<p>This is a paragraph.</p>${INJECTED_AD_CODE}
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>${INJECTED_AD_CODE}
+</blockquote>`.trim();
+
+    const result = await processor.process(input);
+    expect(result.toString().trim()).toBe(expected);
+});
+
 it("Do not insert to list items", async () => {
     const input = `
 # Hello, world!
@@ -144,6 +176,42 @@ This is a paragraph.
 </ul>`.trim();
 
     const result = await processor.process(input);
+    expect(result.toString().trim()).toBe(expected);
+});
+
+it("Extend default excludes with additional elements", async () => {
+    const inputHtml = `
+<h1>Hello</h1>
+<p>A</p>
+<section>
+<p>B1</p>
+<p>B2</p>
+</section>
+<p>C1</p>
+<p>C2</p>`;
+
+    const processor = unified()
+        .use(rehypeAutoAds, {
+            adCode: AD_CODE,
+            paragraphInterval: 2,
+            excludeWithin: (defaults) => [...defaults, "section"]
+        })
+        .use(rehypeStringify);
+
+    const tree = fromHtml(inputHtml, { fragment: true });
+    const transformed = await processor.run(tree);
+    const result = processor.stringify(transformed);
+
+    const expected = `
+<h1>Hello</h1>
+<p>A</p>
+<section>
+<p>B1</p>
+<p>B2</p>
+</section>
+<p>C1</p>${INJECTED_AD_CODE}
+<p>C2</p>`.trim();
+
     expect(result.toString().trim()).toBe(expected);
 });
 

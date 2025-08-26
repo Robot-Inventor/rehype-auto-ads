@@ -55,6 +55,26 @@ interface RehypeAutoAdsOptions {
      * @default Infinity
      */
     maxAds?: number;
+    /**
+     * Controls which ancestor elements should prevent ad insertion.
+     * @example
+     * When specifying an array, the default list is replaced entirely.
+     * ```javascript
+     * .use(rehypeAutoAds, {
+     * adCode: "<AD_CODE>",
+     *   excludeWithin: ["pre", "code"]
+     * });
+     * ```
+     * When specifying a function, the current defaults are passed as an argument, allowing you to extend the defaults.
+     * ```javascript
+     * .use(rehypeAutoAds, {
+     *   adCode: "<AD_CODE>",
+     *   excludeWithin: (defaults) => [...defaults, "custom-element"]
+     * });
+     * ```
+     * @default ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"]
+     */
+    excludeWithin?: string[] | ((defaults: string[]) => string[]);
 }
 
 /**
@@ -62,9 +82,7 @@ interface RehypeAutoAdsOptions {
  */
 type RehypeAutoAdsFullOptions = Required<RehypeAutoAdsOptions>;
 
-const EXCLUDE_TARGETS = {
-    tagNames: ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"]
-};
+const DEFAULT_EXCLUDE_TAG_NAMES = ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"];
 
 const FIRST_AD_INDEX = 1;
 
@@ -81,6 +99,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
     const defaultOptions = {
         adCode: "",
         countFrom: 0,
+        excludeWithin: DEFAULT_EXCLUDE_TAG_NAMES,
         maxAds: Infinity,
         paragraphInterval: 5,
         // eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/explicit-function-return-type
@@ -91,6 +110,31 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         ...defaultOptions,
         ...args
     };
+
+    /**
+     * Compute final excludeWithin tag list per new spec.
+     * - When an array is provided: replace defaults entirely.
+     * - When a function is provided: receive defaults and return the final list.
+     * - When omitted/invalid: use defaults.
+     * @returns Final unique tag name list used to block insertion within ancestors.
+     */
+    const computeExcludeWithin = (): string[] => {
+        const defaults = DEFAULT_EXCLUDE_TAG_NAMES;
+        const user = options.excludeWithin;
+
+        if (Array.isArray(user)) {
+            return Array.from(new Set(user));
+        }
+
+        if (typeof user === "function") {
+            const result = user(defaults);
+            return Array.isArray(result) ? Array.from(new Set(result)) : defaults;
+        }
+
+        return defaults;
+    };
+
+    const excludedTagNames = computeExcludeWithin();
 
     /**
      * Converts ad code string to HAST nodes
@@ -121,7 +165,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             paragraphCount++;
 
             const skipNode = ancestors.some(
-                (ancestor) => isElement(ancestor) && EXCLUDE_TARGETS.tagNames.includes(ancestor.tagName)
+                (ancestor) => isElement(ancestor) && excludedTagNames.includes(ancestor.tagName)
             );
             if (skipNode) return;
 
