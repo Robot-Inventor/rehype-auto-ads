@@ -67,12 +67,12 @@ export interface RehypeAutoAdsOptions {
     adCode: string;
     countFrom?: number;
     paragraphInterval?: number;
-    shouldInsertAd?: (
-        vfile: VFile,
-        previousNode: Root | ElementContent | Doctype,
-        nextNode: Root | ElementContent | Doctype | null,
-        ancestors: (Root | Element)[]
-    ) => boolean;
+    shouldInsertAd?: (args: {
+        vfile: VFile;
+        previousNode: Root | ElementContent | Doctype;
+        nextNode: Root | ElementContent | Doctype | null;
+        ancestors: (Root | Element)[];
+    }) => boolean;
     maxAds?: number;
     excludeWithin?: string[] | ((defaults: string[]) => string[]);
 }
@@ -104,7 +104,7 @@ Default: ``5``
 
 Function to determine whether to insert an ad code. If this function returns ``true``, the ad code will be inserted. The default implementation always returns ``true``.
 
-#### Parameters
+Receives a single object argument with:
 
 - ``vfile``: vfile of the current file.
 - ``previousNode``: The previous node of the insertion point.

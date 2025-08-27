@@ -5,6 +5,17 @@ import { fromHtml } from "hast-util-from-html";
 import { isElement } from "hast-util-is-element";
 import { visitParents } from "unist-util-visit-parents";
 
+interface ShouldInsertAdArgs {
+    /** `vfile` of the current file. */
+    vfile: VFile;
+    /** The previous node of the insertion point. */
+    previousNode: Root | ElementContent | Doctype;
+    /** The next node of the insertion point. */
+    nextNode: Root | ElementContent | Doctype | null;
+    /** Ancestors of the ``previousNode``. */
+    ancestors: Array<Root | Element>;
+}
+
 /**
  * Options for the rehype-auto-ads plugin.
  */
@@ -38,18 +49,15 @@ interface RehypeAutoAdsOptions {
      * Function to determine whether to insert an ad code.
      * If this function returns ``true``, the ad code will be inserted.
      * The default implementation always returns ``true``.
-     * @param vfile vfile of the current file.
-     * @param previousNode The previous node of the insertion point.
-     * @param nextNode The next node of the insertion point.
-     * @param ancestors Ancestors of the ``previousNode``.
+     *
+     * Receives a single object argument with:
+     * - ``vfile``: vfile of the current file.
+     * - ``previousNode``: The previous node of the insertion point.
+     * - ``nextNode``: The next node of the insertion point.
+     * - ``ancestors``: Ancestors of the `previousNode`.
      * @returns Whether to insert ads or not.
      */
-    shouldInsertAd?: (
-        vfile: VFile,
-        previousNode: Root | ElementContent | Doctype,
-        nextNode: Root | ElementContent | Doctype | null,
-        ancestors: Array<Root | Element>
-    ) => boolean;
+    shouldInsertAd?: (args: ShouldInsertAdArgs) => boolean;
     /**
      * The maximum number of ads to be inserted.
      * @default Infinity
@@ -102,8 +110,8 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         excludeWithin: DEFAULT_EXCLUDE_TAG_NAMES,
         maxAds: Infinity,
         paragraphInterval: 5,
-        // eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/explicit-function-return-type
-        shouldInsertAd: () => true
+        // eslint-disable-next-line jsdoc/require-jsdoc
+        shouldInsertAd: (): true => true
     } satisfies Required<RehypeAutoAdsOptions>;
 
     const options: RehypeAutoAdsFullOptions = {
@@ -180,7 +188,8 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             const nextNode = parent.children[index + 1] ?? null;
 
             const shouldInsertAd =
-                paragraphCount >= options.paragraphInterval && options.shouldInsertAd(vfile, node, nextNode, ancestors);
+                paragraphCount >= options.paragraphInterval &&
+                options.shouldInsertAd({ ancestors, nextNode, previousNode: node, vfile });
 
             if (shouldInsertAd) {
                 // eslint-disable-next-line no-magic-numbers
