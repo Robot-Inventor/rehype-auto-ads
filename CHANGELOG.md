@@ -1,5 +1,19 @@
 # rehype-auto-ads
 
+## 2.0.0
+
+### Major Changes
+
+-   [#81](https://github.com/Robot-Inventor/rehype-auto-ads/pull/81) [`02f3836`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/02f3836324f566ff7cff8a6a2644cb8ab872773b) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - feat: refactor `shouldInsertAd` parameter to accept a single object argument
+
+### Minor Changes
+
+-   [#80](https://github.com/Robot-Inventor/rehype-auto-ads/pull/80) [`0577c70`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/0577c7013659f8b276e712aef40061fc88a2bd3f) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - feat: add `excludeWithin` option to control ad insertion in specified elements
+
+### Patch Changes
+
+-   [#78](https://github.com/Robot-Inventor/rehype-auto-ads/pull/78) [`2a04cc4`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/2a04cc4a8b74aede86b1038b646414c42687ed00) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - chore: update vulnerable dependencies
+
 ## 1.3.1
 
 ### Patch Changes
