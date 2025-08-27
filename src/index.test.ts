@@ -234,7 +234,7 @@ This is a paragraph.`.trim();
         adCode: AD_CODE,
         paragraphInterval: 1,
         countFrom: 0,
-        shouldInsertAd: (_, previousNode, nextNode, ancestors) => {
+        shouldInsertAd: ({ previousNode, nextNode, ancestors }) => {
             if (nextNode && nextNode.type === "text") {
                 const parent = ancestors[ancestors.length - 1];
                 const index = parent.children.indexOf(nextNode);
