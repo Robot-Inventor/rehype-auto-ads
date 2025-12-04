@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 2.0.2
+
+### Patch Changes
+
+-   [#91](https://github.com/Robot-Inventor/rehype-auto-ads/pull/91) [`99c2a3c`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/99c2a3cabc62bcce39701ce853714966e70d87b2) Thanks [@dependabot](https://github.com/apps/dependabot)! - build(deps): bump mdast-util-to-hast from 13.1.0 to 13.2.1
+
 ## 2.0.1
 
 ### Patch Changes
