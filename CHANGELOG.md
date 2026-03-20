@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 2.0.5
+
+### Patch Changes
+
+-   [#102](https://github.com/Robot-Inventor/rehype-auto-ads/pull/102) [`50e3bc8`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/50e3bc8413336a2e8339bfd8711d1686e304805e) Thanks [@dependabot](https://github.com/apps/dependabot)! - build(deps-dev): bump flatted from 3.3.1 to 3.4.2
+
 ## 2.0.4
 
 ### Patch Changes
