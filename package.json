@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/Robot-Inventor/rehype-auto-ads#readme",
   "devDependencies": {
-    "@changesets/changelog-github": "^0.6.0",
+    "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.27.1",
     "@robot-inventor/eslint-config": "^11.0.0",
     "@robot-inventor/tsconfig-base": "^7.0.0",
