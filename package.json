@@ -17,7 +17,7 @@
     "test": "vitest",
     "format": "prettier ./src/ --write",
     "format:check": "prettier ./src/ --check",
-    "lint": "eslint ./src/**/*.ts",
+    "lint": "eslint \"./src/**/*.ts\"",
     "changeset-version": "changeset version && npm run version",
     "changeset-publish": "npm run build && changeset publish"
   },
