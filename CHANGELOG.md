@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 2.0.9
+
+### Patch Changes
+
+- [#126](https://github.com/Robot-Inventor/rehype-auto-ads/pull/126) [`6712fd8`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/6712fd8936662476fb435b7f631c4166b59992d1) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - chore: update vulnerable dependencies
+
 ## 2.0.8
 
 ### Patch Changes
