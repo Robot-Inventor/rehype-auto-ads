@@ -102,7 +102,7 @@ const FIRST_AD_INDEX = 1;
  * @param args Options for the rehype-auto-ads plugin.
  * @returns The transformer function that inserts the ad code.
  */
-// eslint-disable-next-line max-lines-per-function
+// oxlint-disable-next-line max-lines-per-function
 const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAdsOptions) => {
     const defaultOptions = {
         adCode: "",
@@ -110,7 +110,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         excludeWithin: DEFAULT_EXCLUDE_TAG_NAMES,
         maxAds: Infinity,
         paragraphInterval: 5,
-        // eslint-disable-next-line jsdoc/require-jsdoc
+        // oxlint-disable-next-line jsdoc-js/require-jsdoc
         shouldInsertAd: (): true => true
     } satisfies Required<RehypeAutoAdsOptions>;
 
@@ -159,13 +159,13 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
      * @param tree The root node of the HAST tree.
      * @param vfile The vfile of the current file.
      */
-    // eslint-disable-next-line max-lines-per-function
+    // oxlint-disable-next-line max-lines-per-function
     const transform: Transformer<Root> = (tree, vfile) => {
-        // eslint-disable-next-line no-magic-numbers
+        // oxlint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
         let adCount = 0;
 
-        // eslint-disable-next-line max-statements
+        // oxlint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
             if (adCount >= options.maxAds) return;
             if (!isElement(node) || node.tagName !== "p") return;
@@ -177,14 +177,14 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             );
             if (skipNode) return;
 
-            // eslint-disable-next-line no-magic-numbers
+            // oxlint-disable-next-line no-magic-numbers
             const parent = ancestors[ancestors.length - 1];
             if (!parent) {
                 throw new Error("[rehype-auto-ads] The parent node is not found.");
             }
 
             const index = parent.children.indexOf(node);
-            // eslint-disable-next-line no-magic-numbers
+            // oxlint-disable-next-line no-magic-numbers
             const nextNode = parent.children[index + 1] ?? null;
 
             const shouldInsertAd =
@@ -192,7 +192,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
                 options.shouldInsertAd({ ancestors, nextNode, previousNode: node, vfile });
 
             if (shouldInsertAd) {
-                // eslint-disable-next-line no-magic-numbers
+                // oxlint-disable-next-line no-magic-numbers
                 paragraphCount = 0;
 
                 const ad =
@@ -202,12 +202,12 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
                 adCount++;
 
-                // eslint-disable-next-line no-magic-numbers
+                // oxlint-disable-next-line no-magic-numbers
                 if (ancestors.length === 0) return;
 
-                // eslint-disable-next-line no-magic-numbers
+                // oxlint-disable-next-line no-magic-numbers
                 if (index >= 0) {
-                    // eslint-disable-next-line no-magic-numbers
+                    // oxlint-disable-next-line no-magic-numbers
                     parent.children.splice(index + 1, 0, ...ad);
                 }
             }
