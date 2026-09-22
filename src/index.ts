@@ -159,13 +159,11 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
      * @param tree The root node of the HAST tree.
      * @param vfile The vfile of the current file.
      */
-    // oxlint-disable-next-line max-lines-per-function
     const transform: Transformer<Root> = (tree, vfile) => {
         // oxlint-disable-next-line no-magic-numbers
         let paragraphCount = options.countFrom || 0;
         let adCount = 0;
 
-        // oxlint-disable-next-line max-statements
         visitParents<Root, string>(tree, "element", (node, ancestors) => {
             if (adCount >= options.maxAds) return;
             if (!isElement(node) || node.tagName !== "p") return;
