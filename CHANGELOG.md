@@ -1,5 +1,11 @@
 # rehype-auto-ads
 
+## 2.0.11
+
+### Patch Changes
+
+- [#143](https://github.com/Robot-Inventor/rehype-auto-ads/pull/143) [`a685a22`](https://github.com/Robot-Inventor/rehype-auto-ads/commit/a685a2290964179f69c0163e88ceb529adb8f393) Thanks [@Robot-Inventor](https://github.com/Robot-Inventor)! - chore: remove unused oxlint-disable comments
+
 ## 2.0.10
 
 ### Patch Changes
