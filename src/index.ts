@@ -112,7 +112,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         paragraphInterval: 5,
         // oxlint-disable-next-line jsdoc-js/require-jsdoc
         shouldInsertAd: (): true => true
-    } satisfies Required<RehypeAutoAdsOptions>;
+    } as const satisfies Required<RehypeAutoAdsOptions>;
 
     const options: RehypeAutoAdsFullOptions = {
         ...defaultOptions,
