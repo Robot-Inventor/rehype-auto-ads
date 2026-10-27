@@ -27,11 +27,7 @@ const options = {
     maxAds: 3
 };
 
-const processor = unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypeAutoAds, options)
-    .use(rehypeStringify);
+const processor = unified().use(remarkParse).use(remarkRehype).use(rehypeAutoAds, options).use(rehypeStringify);
 
 const markdown = `
 # Hello, world!
@@ -78,7 +74,7 @@ export interface RehypeAutoAdsOptions {
 }
 ```
 
-### ``adCode``
+### `adCode`
 
 The ad code to be inserted. For example, Google Adsense display ad code.
 
@@ -86,38 +82,38 @@ When a string is provided, it will be used as-is for all ad insertions.
 
 When a function is provided, it will be executed each time an ad is inserted with a parameter indicating which ad is being inserted (1 for first ad, 2 for second ad, etc.), allowing generation of different ad code based on position.
 
-### ``countFrom``
+### `countFrom`
 
-Initial value of paragraph counter. In other words, this value should be set to the value of ``paragraphInterval`` minus the number of paragraphs you want to insert the first ad.
+Initial value of paragraph counter. In other words, this value should be set to the value of `paragraphInterval` minus the number of paragraphs you want to insert the first ad.
 
-If you want to insert ad code from the third paragraph and every 5 paragraphs, set this to ``2``.
+If you want to insert ad code from the third paragraph and every 5 paragraphs, set this to `2`.
 
-Default: ``0``
+Default: `0`
 
-### ``paragraphInterval``
+### `paragraphInterval`
 
 The value indicating how many paragraphs to insert advertising code. For example, specifying 5 will insert ads every 5 paragraphs.
 
-Default: ``5``
+Default: `5`
 
-### ``shouldInsertAd``
+### `shouldInsertAd`
 
-Function to determine whether to insert an ad code. If this function returns ``true``, the ad code will be inserted. The default implementation always returns ``true``.
+Function to determine whether to insert an ad code. If this function returns `true`, the ad code will be inserted. The default implementation always returns `true`.
 
 Receives a single object argument with:
 
-- ``vfile``: vfile of the current file.
-- ``previousNode``: The previous node of the insertion point.
-- ``nextNode``: The next node of the insertion point.
-- ``ancestors``: Ancestors of the `previousNode`.
+- `vfile`: vfile of the current file.
+- `previousNode`: The previous node of the insertion point.
+- `nextNode`: The next node of the insertion point.
+- `ancestors`: Ancestors of the `previousNode`.
 
-### ``maxAds``
+### `maxAds`
 
 The maximum number of ads to be inserted.
 
-Default: ``Infinity``
+Default: `Infinity`
 
-### ``excludeWithin``
+### `excludeWithin`
 
 Controls which ancestor elements should prevent ad insertion.
 
