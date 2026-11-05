@@ -90,7 +90,17 @@ interface RehypeAutoAdsOptions {
  */
 type RehypeAutoAdsFullOptions = Required<RehypeAutoAdsOptions>;
 
-const DEFAULT_EXCLUDE_TAG_NAMES = ["aside", "blockquote", "ul", "ol", "li", "table", "pre", "code", "figure"];
+const DEFAULT_EXCLUDE_TAG_NAMES = [
+    "aside",
+    "blockquote",
+    "ul",
+    "ol",
+    "li",
+    "table",
+    "pre",
+    "code",
+    "figure"
+] as const satisfies Array<keyof HTMLElementTagNameMap>;
 
 const FIRST_AD_INDEX = 1;
 
@@ -110,7 +120,6 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
         excludeWithin: DEFAULT_EXCLUDE_TAG_NAMES,
         maxAds: Infinity,
         paragraphInterval: 5,
-        // oxlint-disable-next-line jsdoc-js/require-jsdoc
         shouldInsertAd: (): true => true
     } as const satisfies Required<RehypeAutoAdsOptions>;
 
@@ -136,6 +145,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
 
         if (typeof user === "function") {
             const result = user(defaults);
+
             return Array.isArray(result) ? Array.from(new Set(result)) : defaults;
         }
 
@@ -173,6 +183,7 @@ const rehypeAutoAds: Plugin<[RehypeAutoAdsOptions], Root> = (args: RehypeAutoAds
             const skipNode = ancestors.some(
                 (ancestor) => isElement(ancestor) && excludedTagNames.includes(ancestor.tagName)
             );
+
             if (skipNode) return;
 
             // oxlint-disable-next-line no-magic-numbers
